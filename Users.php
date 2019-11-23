@@ -5,61 +5,59 @@ require_once './vendor/autoload.php';
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-class Users {
-    protected $database;
+class Users 
+{
+    protected $db;
     protected $dbname = 'users';
 
-    public function __construct(){
-        $acc = ServiceAccount::fromJsonFile(__DIR__ . '/secret/arthursystems-php-tutorials-0066e2bd5954.json');
-        $firebase = (new Factory)->withServiceAccount($acc)->create();
+    public function __construct()
+    {
+        $acc = ServiceAccount::fromJsonFile( __DIR__.'/secret/probookingapp-0ffc2876f0e8.json' );
+        $firebase = (new Factory)->withServiceAccount( $acc )->create();
 
-        $this->database = $firebase->getDatabase();
+        $this->db = $firebase->getDatabase();
     }
 
-    public function get(int $userID = NULL){
-        if (empty($userID) || !isset($userID)) { return FALSE; }
+    public function get(int $id = null)
+    {
+        if( empty($id) || isset($id) ){ return false; }
 
-        if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)){
-            return $this->database->getReference($this->dbname)->getChild($userID)->getValue();
-        } else {
-            return FALSE;
+        if( $this->db->getReference( $this->dbname )->getSnapshop()->hasChild($id) ){
+            return $this->db->getReference( $this->dbname )->getChild( $id )->getValue();
         }
     }
 
-    public function insert(array $data) {
-        if (empty($data) || !isset($data)) { return FALSE; }
+    public function insert( array $data )
+    {
+        if( empty($data) || !isset( $data )  ){ return false; }
 
-        foreach ($data as $key => $value){
-            $this->database->getReference()->getChild($this->dbname)->getChild($key)->set($value);
+        foreach ($data as $key => $value) {
+            $this->db->getReference( $this->dbname )->getChild( $key )->set( $value );
         }
 
-        return TRUE;
+        return true;
     }
 
-    public function delete(int $userID) {
-        if (empty($userID) || !isset($userID)) { return FALSE; }
+    public function delete(int $id)
+    {
+        if( empty($id) || isset($id) ){ return false; }
 
-        if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)){
-            $this->database->getReference($this->dbname)->getChild($userID)->remove();
-            return TRUE;
-        } else {
-            return FALSE;
+        if( $this->db->getReference( $this->dbname )->getSnapshop()->hasChild($id) ){
+            $this->db->getReference( $this->dbname )->getChild( $id )->remove();
+
+            return true;
         }
+        else{
+            return false;
+        }
+
     }
 }
 
-$users = new Users();
 
-//var_dump($users->insert([
-//    '1' => 'John',
-//    '2' => 'Doe',
-//    '3' => 'Smith'
-//]));
+$users = New Users();
 
-//var_dump($users->get(1));
-
-//var_dump($users->delete(2));
-
-var_dump($users->insert([
-    '1' => 'John Doe',
-]));
+var_dump( $users->insert([
+    '1' => 'Chong',
+    '2' => 'Top'
+]) ); 
