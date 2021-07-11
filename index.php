@@ -180,9 +180,6 @@ if( $res ){
         echo 'Series Not found<br>';
     }
 
-
-    
-
 }
 
 
