@@ -21,6 +21,8 @@ class ToursRecent{
 
     public function insert( array $data )
     {
+        $this->remove();
+
         if( empty($data) || !isset( $data )  ){ return false; }
 
         foreach ($data as $key => $value) {
@@ -28,5 +30,10 @@ class ToursRecent{
         }
 
         return true;
+    }
+
+    public function remove()
+    {
+        $this->db->getReference( $this->dbname )->remove();
     }
 }

@@ -1,14 +1,12 @@
 <?php
 
-// require_once './vendor/autoload.php';
-
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-class ToursFlashsale{
+class CountrySeries{
  
     protected $db;
-    protected $dbname = 'tours/flashsale';
+    protected $dbname = 'tours/countries';
 
     public function __construct()
     {
@@ -19,20 +17,20 @@ class ToursFlashsale{
     }
 
 
-    public function insert( array $data )
+    public function insert( int $id, array $data )
     {
-        $this->remove();
+        $this->remove($id);
         if( empty($data) || !isset( $data )  ){ return false; }
 
         foreach ($data as $key => $value) {
-            $this->db->getReference( $this->dbname )->getChild( $key )->set( $value );
+            $this->db->getReference( $this->dbname )->getChild( "{$id}/series" )->getChild( $key )->set( $value );
         }
 
         return true;
     }
 
-    public function remove()
+    public function remove(int $id)
     {
-        $this->db->getReference( $this->dbname )->remove();
+        $this->db->getReference( $this->dbname )->getChild( "{$id}/series" )->remove();
     }
 }
